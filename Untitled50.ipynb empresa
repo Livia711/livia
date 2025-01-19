@@ -1,0 +1,160 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOmWAR/cKHzp6XwDIlFXAj/",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Livia711/livia/blob/main/Untitled50.ipynb%20empresa\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Definindo os parâmetros iniciais\n",
+        "num_clientes = 100  # Quantos clientes começaram com a empresa\n",
+        "CAC = 150  # Quanto custa para adquirir um novo cliente\n",
+        "ticket_recompra = 200  # Valor médio das compras de clientes que retornam\n",
+        "margem_lucro = 0.30  # O lucro que a empresa ganha de cada venda\n",
+        "prob_recompra_1_10_mes = [0.20, 0.18, 0.16, 0.14, 0.12, 0.10, 0.08, 0.06, 0.05, 0.05]  # Probabilidade de recompra nos primeiros 10 meses\n",
+        "prob_recompra_10_mes_mais = 0.05  # Probabilidade de recompra depois do 10º mês\n",
+        "\n",
+        "# Função que calcula o lucro mês a mês até a empresa virar o jogo\n",
+        "def calcular_lucros_mensais():\n",
+        "    lucro_acumulado = -num_clientes * CAC  # Começa com o prejuízo do custo de aquisição\n",
+        "    mes = 1\n",
+        "    lucros_mensais = []  # Aqui vamos guardando o lucro mês a mês\n",
+        "\n",
+        "    # Simula os meses até a empresa começar a ter lucro\n",
+        "    while lucro_acumulado <= 0:\n",
+        "        if mes <= 10:\n",
+        "            prob_recompra = prob_recompra_1_10_mes[mes - 1]\n",
+        "        else:\n",
+        "            prob_recompra = prob_recompra_10_mes_mais\n",
+        "\n",
+        "        clientes_recomprados = num_clientes * prob_recompra\n",
+        "        lucro_mes = clientes_recomprados * ticket_recompra * margem_lucro\n",
+        "        lucro_acumulado += lucro_mes\n",
+        "\n",
+        "        lucros_mensais.append((mes, lucro_acumulado))  # Guarda o lucro do mês\n",
+        "\n",
+        "        mes += 1  # Passa para o próximo mês\n",
+        "\n",
+        "    return lucros_mensais\n",
+        "\n",
+        "# Calcula os lucros até a empresa finalmente começar a ganhar dinheiro\n",
+        "lucros_mensais = calcular_lucros_mensais()\n",
+        "\n",
+        "# Exibe o lucro de cada mês até a empresa ficar no verde\n",
+        "for mes, lucro in lucros_mensais:\n",
+        "    print(f'Mês {mes}: Lucro acumulado = R${lucro:.2f}')\n",
+        "\n",
+        "# Agora, o grande momento! Quando a empresa se torna lucrativa?\n",
+        "mes_final = lucros_mensais[-1][0]\n",
+        "print(f'\\nA empresa se torna lucrativa no mês {mes_final}.')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ZPNzvr3Dg38d",
+        "outputId": "48d81d6d-b9d7-46a5-be8c-ca1d86db8038"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Mês 1: Lucro acumulado = R$-13800.00\n",
+            "Mês 2: Lucro acumulado = R$-12720.00\n",
+            "Mês 3: Lucro acumulado = R$-11760.00\n",
+            "Mês 4: Lucro acumulado = R$-10920.00\n",
+            "Mês 5: Lucro acumulado = R$-10200.00\n",
+            "Mês 6: Lucro acumulado = R$-9600.00\n",
+            "Mês 7: Lucro acumulado = R$-9120.00\n",
+            "Mês 8: Lucro acumulado = R$-8760.00\n",
+            "Mês 9: Lucro acumulado = R$-8460.00\n",
+            "Mês 10: Lucro acumulado = R$-8160.00\n",
+            "Mês 11: Lucro acumulado = R$-7860.00\n",
+            "Mês 12: Lucro acumulado = R$-7560.00\n",
+            "Mês 13: Lucro acumulado = R$-7260.00\n",
+            "Mês 14: Lucro acumulado = R$-6960.00\n",
+            "Mês 15: Lucro acumulado = R$-6660.00\n",
+            "Mês 16: Lucro acumulado = R$-6360.00\n",
+            "Mês 17: Lucro acumulado = R$-6060.00\n",
+            "Mês 18: Lucro acumulado = R$-5760.00\n",
+            "Mês 19: Lucro acumulado = R$-5460.00\n",
+            "Mês 20: Lucro acumulado = R$-5160.00\n",
+            "Mês 21: Lucro acumulado = R$-4860.00\n",
+            "Mês 22: Lucro acumulado = R$-4560.00\n",
+            "Mês 23: Lucro acumulado = R$-4260.00\n",
+            "Mês 24: Lucro acumulado = R$-3960.00\n",
+            "Mês 25: Lucro acumulado = R$-3660.00\n",
+            "Mês 26: Lucro acumulado = R$-3360.00\n",
+            "Mês 27: Lucro acumulado = R$-3060.00\n",
+            "Mês 28: Lucro acumulado = R$-2760.00\n",
+            "Mês 29: Lucro acumulado = R$-2460.00\n",
+            "Mês 30: Lucro acumulado = R$-2160.00\n",
+            "Mês 31: Lucro acumulado = R$-1860.00\n",
+            "Mês 32: Lucro acumulado = R$-1560.00\n",
+            "Mês 33: Lucro acumulado = R$-1260.00\n",
+            "Mês 34: Lucro acumulado = R$-960.00\n",
+            "Mês 35: Lucro acumulado = R$-660.00\n",
+            "Mês 36: Lucro acumulado = R$-360.00\n",
+            "Mês 37: Lucro acumulado = R$-60.00\n",
+            "Mês 38: Lucro acumulado = R$240.00\n",
+            "\n",
+            "A empresa se torna lucrativa no mês 38.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Parâmetros iniciais:**\n",
+        "A gente começa definindo alguns números importantes, como quantos clientes começaram (**100**), quanto custa adquirir um novo cliente ($150),\n",
+        "o valor das compras que os clientes fazem  ($200), e a margem de lucro (**30%**).\n",
+        "\n",
+        "**Função calcular_lucros_mensais():**\n",
+        "A ideia aqui é simular o lucro da empresa mês a mês, começando com o prejuízo do custo de aquisição dos clientes.\n",
+        "\n",
+        "Para cada mês, o código calcula o número de clientes que retornam (de acordo com a probabilidade de recompra) e quanto a empresa ganha com esses clientes. Esse lucro vai sendo somado ao lucro acumulado.\n",
+        "\n",
+        "O código continua simulando os meses até o lucro acumulado ser positivo, ou seja, quando a empresa começa a lucrar.\n",
+        "\n",
+        "**Exibindo os lucros:**\n",
+        "O código então mostra, mês a mês, quanto de lucro a empresa tem até se tornar lucrativa.\n",
+        "\n",
+        " **Mensagem final:**\n",
+        "Quando o lucro acumulado for positivo, o código exibe em qual mês a empresa finalmente começa a ter lucro.\n",
+        "\n",
+        "\n",
+        "**Resumo:** o código simula o lucro da empresa mês a mês e mostra em qual mês ela começa a ser lucrativa.\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "3N7GvLkFijE_"
+      }
+    }
+  ]
+}
