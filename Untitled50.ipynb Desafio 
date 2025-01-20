@@ -1,0 +1,146 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP3gTW6GcvT+6cPV2VTA3NT",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Livia711/livia/blob/main/Untitled50.ipynb%20Desafio%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Parâmetros\n",
+        "num_clientes = 100  # Quantidade de clientes iniciais\n",
+        "CAC = 150  # Custo de aquisição por cliente (R$)\n",
+        "ticket_recompra = 200  # Ticket médio nas recompras (R$)\n",
+        "margem_lucro = 0.30  # Margem de lucro (30%)\n",
+        "prob_recompra_0_10_mes = [0.20, 0.18, 0.16, 0.14, 0.12, 0.10, 0.08, 0.07, 0.06, 0.05]  # Probabilidade de recompra nos 10 primeiros meses\n",
+        "prob_recompra_10_mes_mais = 0.05  # Probabilidade de recompra após o 10º mês\n",
+        "\n",
+        "# Função que calcula os lucros mês a mês até ser lucrativo\n",
+        "def calcular_lucros_mensais():\n",
+        "    lucro_acumulado = -num_clientes * CAC  # Começa com o prejuízo do custo de aquisição no mês 0\n",
+        "    mes = 0  # Começa no mês 0\n",
+        "    lucros_mensais = []  # Lista para armazenar o lucro de cada mês\n",
+        "    meses = []  # Lista para armazenar o número de meses\n",
+        "\n",
+        "    # Simula os meses até se tornar lucrativo\n",
+        "    while True:\n",
+        "        if mes < 10:\n",
+        "            prob_recompra = prob_recompra_0_10_mes[mes]  # Probabilidade de recompra entre o mês 0 e 10\n",
+        "        else:\n",
+        "            prob_recompra = prob_recompra_10_mes_mais  # Probabilidade de recompra após o 10º mês\n",
+        "\n",
+        "        clientes_recomprados = num_clientes * prob_recompra\n",
+        "        lucro_mes = clientes_recomprados * ticket_recompra * margem_lucro\n",
+        "        lucro_acumulado += lucro_mes\n",
+        "\n",
+        "        lucros_mensais.append(lucro_acumulado)  # Armazena o lucro do mês\n",
+        "        meses.append(mes)  # Armazena o mês\n",
+        "\n",
+        "        if lucro_acumulado > 0:\n",
+        "            break  # Quando o lucro acumulado for positivo, a empresa se torna lucrativa\n",
+        "\n",
+        "        mes += 1  # Passa para o próximo mês\n",
+        "\n",
+        "    return meses, lucros_mensais\n",
+        "\n",
+        "# Calcular lucros mensais até ser lucrativo\n",
+        "meses, lucros_mensais = calcular_lucros_mensais()\n",
+        "\n",
+        "# Exibindo os valores fora do gráfico\n",
+        "for mes, lucro in zip(meses, lucros_mensais):\n",
+        "    print(f'Mês {mes}: Lucro Acumulado = R${lucro:.2f}')\n",
+        "\n",
+        "# Exibir o mês que a empresa se torna lucrativa e o valor do lucro\n",
+        "mes_final = meses[-1]\n",
+        "lucro_final = lucros_mensais[-1]\n",
+        "print(f'\\nA empresa se torna lucrativa no mês {mes_final} quando atinge o ponto de equilibrio com um lucro acumulado de R${lucro_final:.2f}.')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hIPl014cOPTQ",
+        "outputId": "e8117ce3-0e67-45cf-8d5b-996345e2532f"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Mês 0: Lucro Acumulado = R$-13800.00\n",
+            "Mês 1: Lucro Acumulado = R$-12720.00\n",
+            "Mês 2: Lucro Acumulado = R$-11760.00\n",
+            "Mês 3: Lucro Acumulado = R$-10920.00\n",
+            "Mês 4: Lucro Acumulado = R$-10200.00\n",
+            "Mês 5: Lucro Acumulado = R$-9600.00\n",
+            "Mês 6: Lucro Acumulado = R$-9120.00\n",
+            "Mês 7: Lucro Acumulado = R$-8700.00\n",
+            "Mês 8: Lucro Acumulado = R$-8340.00\n",
+            "Mês 9: Lucro Acumulado = R$-8040.00\n",
+            "Mês 10: Lucro Acumulado = R$-7740.00\n",
+            "Mês 11: Lucro Acumulado = R$-7440.00\n",
+            "Mês 12: Lucro Acumulado = R$-7140.00\n",
+            "Mês 13: Lucro Acumulado = R$-6840.00\n",
+            "Mês 14: Lucro Acumulado = R$-6540.00\n",
+            "Mês 15: Lucro Acumulado = R$-6240.00\n",
+            "Mês 16: Lucro Acumulado = R$-5940.00\n",
+            "Mês 17: Lucro Acumulado = R$-5640.00\n",
+            "Mês 18: Lucro Acumulado = R$-5340.00\n",
+            "Mês 19: Lucro Acumulado = R$-5040.00\n",
+            "Mês 20: Lucro Acumulado = R$-4740.00\n",
+            "Mês 21: Lucro Acumulado = R$-4440.00\n",
+            "Mês 22: Lucro Acumulado = R$-4140.00\n",
+            "Mês 23: Lucro Acumulado = R$-3840.00\n",
+            "Mês 24: Lucro Acumulado = R$-3540.00\n",
+            "Mês 25: Lucro Acumulado = R$-3240.00\n",
+            "Mês 26: Lucro Acumulado = R$-2940.00\n",
+            "Mês 27: Lucro Acumulado = R$-2640.00\n",
+            "Mês 28: Lucro Acumulado = R$-2340.00\n",
+            "Mês 29: Lucro Acumulado = R$-2040.00\n",
+            "Mês 30: Lucro Acumulado = R$-1740.00\n",
+            "Mês 31: Lucro Acumulado = R$-1440.00\n",
+            "Mês 32: Lucro Acumulado = R$-1140.00\n",
+            "Mês 33: Lucro Acumulado = R$-840.00\n",
+            "Mês 34: Lucro Acumulado = R$-540.00\n",
+            "Mês 35: Lucro Acumulado = R$-240.00\n",
+            "Mês 36: Lucro Acumulado = R$60.00\n",
+            "\n",
+            "A empresa se torna lucrativa no mês 36 quando atinge o ponto de equilibrio com um lucro acumulado de R$60.00.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "A empresa se torna lucrativa a partir do mês 36 quando o lucro acumulado ultrapassa os custos iniciais de aquisição. Esse ponto de equilibrio pode variar caso a empresa ajuste suas taxas de recompra, margens ou invista em novos clientes, o que acelerario o retorno sobre o investimento."
+      ],
+      "metadata": {
+        "id": "OvVhhn__VWSU"
+      }
+    }
+  ]
+}
